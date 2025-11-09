@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialFlow | Next-Gen Video Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff2d55;
+            --bg-dark: #000000;
+            --text-light: #ffffff;
+        }
+        
+        body {
+            background: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Segoe UI', sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        
+        .btn {
+            background: var(--primary);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 SocialFlow</h1>
+    <p>Next-Gen Video Platform</p>
+    <button class="btn" onclick="startDemo()">
+        <i class="fas fa-play"></i> Demo Modunda Başla
+    </button>
+    
+    <div id="app" style="display: none;">
+        <h2>Uygulama Yükleniyor...</h2>
+    </div>
+
+    <script>
+        function startDemo() {
+            document.body.innerHTML = `
+                <h1>🎉 SocialFlow Çalışıyor!</h1>
+                <p>Uygulama başarıyla başlatıldı.</p>
+                <button class="btn" onclick="location.reload()">
+                    <i class="fas fa-redo"></i> Yeniden Başlat
+                </button>
+            `;
+        }
+        
+        // Uygulama başlatıldığında demo modunu otomatik başlat
+        window.addEventListener('load', () => {
+            console.log('SocialFlow loaded successfully!');
+        });
+    </script>
+</body>
+</html>
