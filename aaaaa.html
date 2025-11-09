@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialFlow | Next-Gen Video Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./src/styles/main.css">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#ff2d55">
+    <meta name="csrf-token" content="{{csrf_token}}">
+    
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" 
+          content="default-src 'self'; 
+                   script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; 
+                   style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+                   img-src 'self' data: https:;
+                   media-src 'self' https:;
+                   connect-src 'self' https://api.socialflow.com;
+                   frame-ancestors 'none';
+                   base-uri 'self';
+                   form-action 'self'">
+</head>
+<body>
+    <!-- Error Boundary -->
+    <div class="error-boundary" id="errorBoundary" aria-hidden="true">
+        <div class="error-content">
+            <div class="error-icon"><i class="fas fa-exclamation-triangle"></i></div>
+            <h2 class="error-title">Bir Hata Oluştu</h2>
+            <p class="error-message">Uygulamada beklenmeyen bir hata oluştu. Lütfen sayfayı yenileyin.</p>
+            <div class="error-details" id="errorDetails"></div>
+            <button class="btn" onclick="location.reload()">
+                <i class="fas fa-redo"></i> Sayfayı Yenile
+            </button>
+        </div>
+    </div>
+
+    <!-- Welcome Screen -->
+    <div id="welcomeScreen">
+        <div class="welcome-content">
+            <h1 class="welcome-title">SocialFlow</h1>
+            <p class="welcome-subtitle">Next-Gen Video Platform</p>
+        </div>
+        <button class="btn" id="demoLogin">
+            <i class="fas fa-play"></i> Demo Modunda Başla
+        </button>
+    </div>
+
+    <!-- Main App Structure -->
+    <header id="mainHeader">
+        <h1 class="app-logo">SocialFlow</h1>
+        <button class="btn" id="themeToggle">
+            <i class="fas fa-moon"></i> Tema
+        </button>
+    </header>
+
+    <main id="mainContent">
+        <div id="videoFeed" class="video-feed">
+            <!-- Video containers will be rendered here -->
+        </div>
+    </main>
+
+    <nav id="bottomNav">
+        <button class="nav-item active" data-page="home">
+            <i class="fas fa-home"></i>
+            <span>Ana Sayfa</span>
+        </button>
+        <button class="nav-item" data-page="explore">
+            <i class="fas fa-search"></i>
+            <span>Keşfet</span>
+        </button>
+        <button class="nav-item" data-page="profile">
+            <i class="fas fa-user"></i>
+            <span>Profil</span>
+        </button>
+        <button class="nav-item" data-page="analytics">
+            <i class="fas fa-chart-bar"></i>
+            <span>Analiz</span>
+        </button>
+    </nav>
+
+    <script type="module" src="./src/app.js"></script>
+</body>
+</html>

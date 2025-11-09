@@ -1,0 +1,20 @@
+socialflow-app/
+│
+├── index.html
+├── manifest.json
+├── sw.js
+├── package.json
+├── README.md
+│
+└── src/
+    ├── app.js
+    ├── auth-manager.js
+    ├── state-manager.js
+    ├── video-player.js
+    ├── error-boundary.js
+    ├── performance-monitor.js
+    ├── security-manager.js
+    └── utils/
+        ├── helpers.js
+        ├── constants.js
+        └── validators.js

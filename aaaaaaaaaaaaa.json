@@ -1,0 +1,27 @@
+{
+  "name": "SocialFlow",
+  "short_name": "SocialFlow",
+  "description": "Next-Gen Video Platform",
+  "version": "1.0.0",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#ff2d55",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/assets/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["social", "entertainment", "video"],
+  "lang": "tr",
+  "scope": "/",
+  "prefer_related_applications": false
+}

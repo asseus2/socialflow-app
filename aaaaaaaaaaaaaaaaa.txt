@@ -1,0 +1,158 @@
+
+## 15. 🔄 `sw.js` (Service Worker)
+
+```javascript
+const CACHE_NAME = 'socialflow-v1.0.0';
+const API_CACHE_NAME = 'socialflow-api-v1.0.0';
+
+const STATIC_ASSETS = [
+  '/',
+  '/index.html',
+  '/src/styles/main.css',
+  '/manifest.json',
+  '/assets/icon-192x192.png',
+  '/assets/icon-512x512.png'
+];
+
+const API_ENDPOINTS = [
+  '/api/videos',
+  '/api/user/profile'
+];
+
+// Install event - cache static assets
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => cache.addAll(STATIC_ASSETS))
+      .then(() => self.skipWaiting())
+  );
+});
+
+// Activate event - cleanup old caches
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME && cacheName !== API_CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    }).then(() => self.clients.claim())
+  );
+});
+
+// Fetch event - strategy: cache first for static, network first for API
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
+  const url = new URL(request.url);
+
+  // API requests - network first, then cache
+  if (API_ENDPOINTS.some(endpoint => url.pathname.startsWith(endpoint))) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          // Cache successful API responses
+          if (response.status === 200) {
+            const responseClone = response.clone();
+            caches.open(API_CACHE_NAME)
+              .then((cache) => cache.put(request, responseClone));
+          }
+          return response;
+        })
+        .catch(() => {
+          // Fallback to cache when offline
+          return caches.match(request);
+        })
+    );
+    return;
+  }
+
+  // Static assets - cache first
+  event.respondWith(
+    caches.match(request)
+      .then((response) => {
+        if (response) {
+          return response;
+        }
+        return fetch(request)
+          .then((response) => {
+            // Cache new requests
+            if (response.status === 200) {
+              const responseClone = response.clone();
+              caches.open(CACHE_NAME)
+                .then((cache) => cache.put(request, responseClone));
+            }
+            return response;
+          });
+      })
+  );
+});
+
+// Background sync for offline actions
+self.addEventListener('sync', (event) => {
+  if (event.tag === 'background-sync') {
+    event.waitUntil(
+      // Process pending actions when back online
+      self.clients.matchAll().then((clients) => {
+        clients.forEach((client) => {
+          client.postMessage({
+            type: 'SYNC_PENDING_ACTIONS'
+          });
+        });
+      })
+    );
+  }
+});
+
+// Push notifications
+self.addEventListener('push', (event) => {
+  if (!event.data) return;
+
+  const data = event.data.json();
+  const options = {
+    body: data.body,
+    icon: '/assets/icon-192x192.png',
+    badge: '/assets/badge-72x72.png',
+    vibrate: [100, 50, 100],
+    data: {
+      url: data.url
+    },
+    actions: [
+      {
+        action: 'open',
+        title: 'Open App'
+      },
+      {
+        action: 'close',
+        title: 'Close'
+      }
+    ]
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(data.title, options)
+  );
+});
+
+// Notification click handler
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+
+  if (event.action === 'open') {
+    event.waitUntil(
+      self.clients.matchAll().then((clients) => {
+        if (clients.length > 0) {
+          clients[0].focus();
+          clients[0].postMessage({
+            type: 'NAVIGATE',
+            url: event.notification.data.url
+          });
+        } else {
+          self.clients.openWindow(event.notification.data.url);
+        }
+      })
+    );
+  }
+});

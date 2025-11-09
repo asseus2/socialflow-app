@@ -1,0 +1,17 @@
+socialflow-app/
+├── index.html
+├── manifest.json
+├── vite.config.js
+├── package.json
+└── src/
+    ├── app.js
+    ├── auth-manager.js
+    ├── state-manager.js
+    ├── video-player.js
+    ├── error-boundary.js
+    ├── styles/
+    │   └── main.css
+    └── utils/
+        ├── helpers.js
+        ├── constants.js
+        └── validators.js
